@@ -15,7 +15,7 @@ def insert_company(conn: Connection, company: str):
         return row[0]
 
     result = conn.execute(
-        text("SELECT id FROM jobs.companies WHERE name=:name"),
+        text("SELECT id FROM companies WHERE name=:name"),
         {"name": company}
     )
 
@@ -25,7 +25,7 @@ def insert_job(conn: Connection, title: str, description: str, company_id: str):
 
     conn.execute(
         text("""
-        INSERT INTO jobs.jobs (title, description, company_id)
+        INSERT INTO jobs (title, description, company_id)
         VALUES (:title, :description, :company_id)
         """),
         {
@@ -43,7 +43,6 @@ def insert_raw_jobs(conn: Connection, df: pd.DataFrame):
     n = df.to_sql(
         "raw_jobs",
         conn,
-        schema="jobs",
         if_exists="append",
         index=False,
         method="multi",

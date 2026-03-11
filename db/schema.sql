@@ -30,7 +30,7 @@ CREATE TABLE jobs.raw_jobs (
 );
 
 CREATE TABLE jobs.jobs (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     title TEXT,
     description TEXT,
     qualifications TEXT,
@@ -57,7 +57,7 @@ CREATE TABLE jobs.skills (
 );
 
 CREATE TABLE jobs.job_skills (
-    job_id INT REFERENCES jobs.jobs(id),
+    job_id BIGINT REFERENCES jobs.jobs(id),
     skill_id INT REFERENCES jobs.skills(id),
     PRIMARY KEY (job_id, skill_id)
 );
