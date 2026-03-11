@@ -1,60 +1,59 @@
 import streamlit as st
+import pandas as pd
 import plotly.express as px
-from queries import *
+from pathlib import Path
 
-st.title("📊 Job Market Analyzer")
+DATA_DIR = Path("dashboard/data")
 
-# By Title
-st.subheader("Top Job Titles")
+st.set_page_config(page_title="Job Market Analyzer", layout="wide")
 
-titles = top_job_titles()
+st.title("Job Market Analyzer")
 
-fig = px.bar(
+# Top job titles
+titles = pd.read_parquet(DATA_DIR / "top_job_titles.parquet")
+
+fig_titles = px.bar(
     titles,
     x="jobs",
     y="title",
     orientation="h"
 )
 
-st.plotly_chart(fig)
+st.subheader("Top Job Titles")
+st.plotly_chart(fig_titles, use_container_width=True)
 
-# By Country
-st.subheader("Jobs by Country")
+# Jobs by country
+countries = pd.read_parquet(DATA_DIR / "jobs_by_country.parquet")
 
-countries = jobs_by_country()
-
-fig = px.bar(
+fig_country = px.bar(
     countries,
     x="country",
     y="jobs"
 )
 
-st.plotly_chart(fig)
+st.subheader("Jobs by Country")
+st.plotly_chart(fig_country, use_container_width=True)
 
-# Salary Distribution
-st.subheader("Salary Distribution")
+# Salary distribution
+salary = pd.read_parquet(DATA_DIR / "salary_distribution.parquet")
 
-salary = salary_distribution()
-
-fig = px.histogram(
+fig_salary = px.histogram(
     salary,
     x="salary_min",
     nbins=40
 )
 
-st.plotly_chart(fig)
+st.subheader("Salary Distribution")
+st.plotly_chart(fig_salary, use_container_width=True)
 
+# Salary vs experience
+exp = pd.read_parquet(DATA_DIR / "salary_vs_experience.parquet")
 
-# Salary vs Experience
-
-st.subheader("Average Salary by Experience")
-
-exp = salary_vs_experience()
-
-fig = px.bar(
+fig_exp = px.bar(
     exp,
     x="experience_level",
     y="avg_salary"
 )
 
-st.plotly_chart(fig)
+st.subheader("Average Salary by Experience")
+st.plotly_chart(fig_exp, use_container_width=True)
