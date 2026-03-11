@@ -57,3 +57,15 @@ fig_exp = px.bar(
 
 st.subheader("Average Salary by Experience")
 st.plotly_chart(fig_exp, use_container_width=True)
+
+# Salary by role
+exp = pd.read_parquet(DATA_DIR / "salary_by_role.parquet")
+
+fig_exp = px.bar(
+    exp,
+    x="title",
+    y="avg_salary"
+)
+
+st.subheader("Average Salary by Role")
+st.plotly_chart(fig_exp, use_container_width=True)
