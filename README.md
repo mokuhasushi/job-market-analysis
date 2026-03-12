@@ -4,7 +4,7 @@ This project was made mostly to get a feeling of how to set up a data analysis p
 
 The base dataset is made of fake data, so charts are looking rather dull and not interesting. 
 
-![jobs_by_title.png]
+![Jobs by Title plot](jobs_by_title.png)
 
 Follow the steps to run the project, assuming a db is available (local development done with a postgres docker container)
 
