@@ -1,24 +1,45 @@
+# Project: job market analysis [ON HOLD]
 
-# Install dependencies and setup
-(venv) pip install -r requirements.txt
+This project was made mostly to get a feeling of how to set up a data analysis project using standard python (pandas+postgresql+streamlit).
+
+The base dataset is made of fake data, so charts are looking rather dull and not interesting. 
+
+![jobs_by_title.png]
+
+Follow the steps to run the project, assuming a db is available (local development done with a postgres docker container)
+
+## Install dependencies and setup
+```python
+python -m venv venv 
+source venv/bin/activate
+pip install -r requirements.txt
 psql -d jobs -f db/schema.sql
-create .env
-Note: BigSerial
+```
+Don't forget to create a `.env` file with a connection string like this: `DB_URL=postgresql://username:password@db_url:5432/jobs` 
 
-# Getting the data 
-Set up Kaggle API TOKEN 
-kaggle datasets download -d ravindrasinghrana/job-description-dataset
+## Getting the data 
+Set up `KAGGLE_API_TOKEN` as described in their docs.
 
-# Load as raw data 
-python -m scripts/run_ingestion.py
+`kaggle datasets download -d ravindrasinghrana/job-description-dataset`
 
-# Transformation and Normalization 
-Only for France and Switzerland to reduce compute time and since this is were I am looking for a job
-(\d+\.?\d*) matches all group of digits with a . 
+And to populate the raw jobs table in the db:
 
-# Deploy on streamlit
-with parquet
+`python -m scripts/run_ingestion`
 
-# Not very useful... target dev!
+## Transformation and Normalization 
+I limited the scope to only for France and Switzerland to reduce compute time and since this is were I am looking for a job.
 
-But hey, base dataset is fake data. Let's look for a real one
+Run
+`python -m scripts/run_normalization`
+
+## Deploy on streamlit
+Export data in parquet format by running 
+`python -m scripts/build_dev_dashboard_data`
+
+then either run locally
+`streamlit run dashboard/app.py`
+
+Or if the streamlit integration is set up for the repo, just push the extracted data to github. 
+A demo board can be found here (since I am on the free plan, the app goes to sleep regularly): 
+`https://job-market-analysis-niotir.streamlit.app`
+
